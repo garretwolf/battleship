@@ -17,4 +17,9 @@ class ShipTest < Minitest::Test
     cruiser = Ship.new("Cruiser", 3)
     assert_equal 3, cruiser.length
   end
+
+  def test_if_ship_starts_with_health_equal_to_length
+    cruiser = Ship.new("Cruiser", 3)
+    assert_equal 3, cruiser.health
+  end
 end
