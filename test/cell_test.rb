@@ -28,4 +28,13 @@ def test_coordinates_starts_empty
 
   assert_equal true, cell.empty?
 end
+
+def test_it_can_place_ship
+  cell = Cell.new("B4")
+  cruiser = Ship.new("Cruiser", 3)
+
+  assert_equal cruiser, cell.place_ship(cruiser)
+  assert_equal cruiser, cell.ship 
+  assert_equal false, cell.empty?
+end
 end

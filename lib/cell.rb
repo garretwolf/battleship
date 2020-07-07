@@ -10,4 +10,8 @@ attr_reader :coordinate, :ship
   def empty?
     @ship.nil?
   end
+
+  def place_ship(name)
+    @ship = name
+  end
 end
