@@ -16,4 +16,4 @@ attr_reader :name, :length, :health
   end
 end
 
-require "pry"; binding.pry 
+# require "pry"; binding.pry 
