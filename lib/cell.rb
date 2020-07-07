@@ -1,1 +1,1 @@
-Drew
+require './lib/ship'
