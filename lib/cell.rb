@@ -26,4 +26,18 @@ attr_reader :coordinate, :ship, :fired_upon
     end
     @fired_upon = true
   end
+
+  def render(optional_reveal = false)
+    if !fired_upon && !empty? && optional_reveal == true
+      "S"
+    elsif fired_upon? && empty?
+      "M"
+    elsif fired_upon? && @ship.sunk?
+      "X"
+    elsif fired_upon? && !empty?
+      "H"
+    elsif !fired_upon?
+        "."
+    end
+  end
 end
