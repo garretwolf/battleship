@@ -44,7 +44,7 @@ class Board
       coordinates.map! do |coordinates|
         coordinates.to_i
       end
-      coordinates.sort.each_cons(2).all? do |x, y|
+      coordinates.each_cons(2).all? do |x, y|
         y == x + 1
       end
     # elsif condition for verticalships???
