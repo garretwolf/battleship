@@ -3,12 +3,9 @@ require './lib/cell'
 
 class Board
 
+  attr_reader :cells
   def initialize
-
-  end
-
-  def cells
-    {
+    @cells = {
       "A1" => Cell.new("A1"),
       "A2" => Cell.new("A2"),
       "A3" => Cell.new("A3"),
@@ -27,4 +24,33 @@ class Board
       "D4" => Cell.new("D4"),
     }
   end
+
+  def valid_coordinate?(coordinate)
+    @cells.keys.include? coordinate
+  end
+
+
+  def valid_placement?(ship, coordinates)
+    ship.length == coordinates.count
+  end
 end
+
+# def consecutive_coordinates?(coordinates)
+#   if #condition for horizontal ships
+#     coordinates.all? { |coordinate| coordinate.include? "A" } ||
+#     coordinates.all? { |coordinate| coordinate.include? "B" } ||
+#     coordinates.all? { |coordinate| coordinate.include? "C" } ||
+#     coordinates.all? { |coordinate| coordinate.include? "D" }
+#     coordinates.map do |coordinate|
+#       coordinate.slice!(0)
+#       require "pry"; binding.pry
+#     end
+#     coordinates.map! do |coordinates|
+#       coordinates.to_i
+#     end
+#     coordinates.each_cons(2).all? do |x, y|
+#       y == x + 1
+#     end
+#   # elsif condition for verticalships???
+#   end
+# end
