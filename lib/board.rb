@@ -29,28 +29,46 @@ class Board
     @cells.keys.include? coordinate
   end
 
+  def horizontal_placement?(coordinates)
+    coordinates.all? { |coordinate| coordinate.include? "A" } ||
+    coordinates.all? { |coordinate| coordinate.include? "B" } ||
+    coordinates.all? { |coordinate| coordinate.include? "C" } ||
+    coordinates.all? { |coordinate| coordinate.include? "D" }
+  end
+
+  def vertical_placement?(coordinates)
+    coordinates.all? { |coordinate| coordinate.include? "1" } ||
+    coordinates.all? { |coordinate| coordinate.include? "2" } ||
+    coordinates.all? { |coordinate| coordinate.include? "3" } ||
+    coordinates.all? { |coordinate| coordinate.include? "4" }
+  end
+
+  def consecutive_coordinates?(coordinates)
+    if horizontal_placement?(coordinates)
+      coordinates.map do |coordinate|
+        coordinate.slice!(0)
+      end
+      coordinates.map! do |coordinate|
+        coordinate.to_i
+      end
+      coordinates.each_cons(2).all? do |x, y|
+        y == x + 1
+      end
+    elsif vertical_placement?(coordinates)
+      coordinates.map do |coordinate|
+        coordinate.slice!(1)
+      end
+      coordinates.map! do |coordinate|
+        coordinate.tr("ABCD", "1234").to_i
+      end
+      coordinates.each_cons(2).all? do |x, y|
+        y == x + 1
+      end
+    end
+  end
 
   def valid_placement?(ship, coordinates)
-    ship.length == coordinates.count
+    ship.length == coordinates.count &&
+    consecutive_coordinates?(coordinates)
   end
 end
-
-# def consecutive_coordinates?(coordinates)
-#   if #condition for horizontal ships
-#     coordinates.all? { |coordinate| coordinate.include? "A" } ||
-#     coordinates.all? { |coordinate| coordinate.include? "B" } ||
-#     coordinates.all? { |coordinate| coordinate.include? "C" } ||
-#     coordinates.all? { |coordinate| coordinate.include? "D" }
-#     coordinates.map do |coordinate|
-#       coordinate.slice!(0)
-#       require "pry"; binding.pry
-#     end
-#     coordinates.map! do |coordinates|
-#       coordinates.to_i
-#     end
-#     coordinates.each_cons(2).all? do |x, y|
-#       y == x + 1
-#     end
-#   # elsif condition for verticalships???
-#   end
-# end
