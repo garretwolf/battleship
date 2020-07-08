@@ -39,7 +39,15 @@ class BoardTest < Minitest::Test
     assert_equal false, board.valid_placement?(submarine, ["A2", "A3", "A4"])
     assert_equal true, board.valid_placement?(cruiser, ["A1", "A2", "A3"])
     assert_equal true, board.valid_placement?(submarine, ["A2", "A3"])
-    require "pry"; binding.pry
+  end
+
+  def test_if_placement_is_horizontal
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    submarine = Ship.new("Submarine", 2)
+
+    assert board.horizontal_placement?(["A1", "A2", "A3"])
+    refute board.horizontal_placement?(["A1", "B1"])
   end
 end
 

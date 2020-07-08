@@ -29,6 +29,19 @@ class Board
     @cells.keys.include? coordinate
   end
 
+  def horizontal_placement?(coordinates)
+    coordinates.all? { |coordinate| coordinate.include? "A" } ||
+    coordinates.all? { |coordinate| coordinate.include? "B" } ||
+    coordinates.all? { |coordinate| coordinate.include? "C" } ||
+    coordinates.all? { |coordinate| coordinate.include? "D" }
+  end
+
+  def vertical_placement?(coordinates)
+    coordinates.all? { |coordinate| coordinate.include? "1" } ||
+    coordinates.all? { |coordinate| coordinate.include? "2" } ||
+    coordinates.all? { |coordinate| coordinate.include? "3" } ||
+    coordinates.all? { |coordinate| coordinate.include? "4" }
+  end
 
   def valid_placement?(ship, coordinates)
     ship.length == coordinates.count
