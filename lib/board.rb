@@ -30,40 +30,20 @@ class Board
   end
 
   def horizontal_placement?(coordinates)
-    coordinates.all? { |coordinate| coordinate.include? "A" } ||
-    coordinates.all? { |coordinate| coordinate.include? "B" } ||
-    coordinates.all? { |coordinate| coordinate.include? "C" } ||
-    coordinates.all? { |coordinate| coordinate.include? "D" }
+    coordinates.map {|coordinate| coordinate[0]}.uniq.count == 1
   end
 
   def vertical_placement?(coordinates)
-    coordinates.all? { |coordinate| coordinate.include? "1" } ||
-    coordinates.all? { |coordinate| coordinate.include? "2" } ||
-    coordinates.all? { |coordinate| coordinate.include? "3" } ||
-    coordinates.all? { |coordinate| coordinate.include? "4" }
+    coordinates.map {|coordinate| coordinate[1]}.uniq.count == 1
   end
 
   def consecutive_coordinates?(coordinates)
     if horizontal_placement?(coordinates)
-      coordinates.map do |coordinate|
-        coordinate.slice!(0)
-      end
-      coordinates.map! do |coordinate|
-        coordinate.to_i
-      end
-      coordinates.each_cons(2).all? do |x, y|
-        y == x + 1
-      end
+      integers = coordinates.map {|coordinate| coordinate[1].to_i}
+      integers.each_cons(2).all? {|x, y| y == x + 1}
     elsif vertical_placement?(coordinates)
-      coordinates.map do |coordinate|
-        coordinate.slice!(1)
-      end
-      coordinates.map! do |coordinate|
-        coordinate.tr("ABCD", "1234").to_i
-      end
-      coordinates.each_cons(2).all? do |x, y|
-        y == x + 1
-      end
+      integers = coordinates.map {|coordinate| coordinate[0].ord}
+      integers.each_cons(2).all? {|x, y| y == x + 1}
     end
   end
 
@@ -72,3 +52,5 @@ class Board
     consecutive_coordinates?(coordinates)
   end
 end
+
+# coordinates.each {|coordinate| coordinate.slice!(1)}.uniq.count == 1
