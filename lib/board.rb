@@ -1,5 +1,6 @@
 require './lib/ship'
 require './lib/cell'
+require 'pry'
 
 class Board
 
@@ -51,6 +52,15 @@ class Board
     ship.length == coordinates.count &&
     consecutive_coordinates?(coordinates)
   end
-end
+# Place method can be refactored
+  def place(ship, coordinates)
+    if valid_placement?(ship, coordinates)
+      coordinates.each do |cell|
+        @cells[cell].place_ship(ship)
+        end
+      end
+    end
+  end
+
 
 # coordinates.each {|coordinate| coordinate.slice!(1)}.uniq.count == 1
