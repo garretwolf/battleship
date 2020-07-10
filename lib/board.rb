@@ -56,7 +56,7 @@ class Board
     ship.length == coordinates.count &&
     consecutive_coordinates?(coordinates)
   end
-# Place method can be refactored
+
   def place(ship, coordinates)
     if valid_placement?(ship, coordinates)
       coordinates.each do |cell|
@@ -64,7 +64,7 @@ class Board
         end
     end
   end
-#NOT WORKING PERFECTLY
+
   def render(optional_reveal = false)
     if optional_reveal == true
       "  1 2 3 4 \nA #{@cells["A1"].render(true)} #{@cells["A2"].render(true)} #{@cells["A3"].render(true)} #{@cells["A4"].render(true)} \nB #{@cells["B1"].render(true)} #{@cells["B2"].render(true)} #{@cells["B3"].render(true)} #{@cells["B4"].render(true)} \nC #{@cells["C1"].render(true)} #{@cells["C2"].render(true)} #{@cells["C3"].render(true)} #{@cells["C4"].render(true)} \nD #{@cells["D1"].render(true)} #{@cells["D2"].render(true)} #{@cells["D3"].render(true)} #{@cells["D4"].render(true)} \n"
@@ -73,14 +73,3 @@ class Board
     end
   end
 end
-
-# board = Board.new
-# cruiser = Ship.new("Cruiser", 3)
-# submarine = Ship.new("Submarine", 2)
-# board.place(cruiser, ["A1", "A2", "A3"])
-# board.place(submarine, ["D1", "D2"])
-# board.cells["A1"].fire_upon
-# board.cells["A2"].fire_upon
-# board.cells["A3"].fire_upon
-# #NOT PERFECT
-# puts board.render
