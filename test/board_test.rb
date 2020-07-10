@@ -125,11 +125,12 @@ class BoardTest < Minitest::Test
     cruiser = Ship.new("Cruiser", 3)
     submarine = Ship.new("Submarine", 2)
     board.place(cruiser, ["A1", "A2", "A3"])
-    board.place(submarine, ["D1", "D2"])
-    board.cells["A1"].fire_upon
-    board.cells["A2"].fire_upon
-    board.cells["A3"].fire_upon
+    # board.place(submarine, ["D1", "D2"])
+    # board.cells["A1"].fire_upon
+    # board.cells["A2"].fire_upon
+    # board.cells["A3"].fire_upon
     # require "pry"; binding.pry
-    assert_equal "  1 2 3 4\nA X X X .\nB . . . .\nC . . . .\nD S S . .", board.render
+    assert_equal "  1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n", board.render
+    assert_equal "  1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . . . . \n", board.render(true)
   end
 end
