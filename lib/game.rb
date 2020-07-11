@@ -38,16 +38,28 @@ attr_reader :player_board,
     end
   end
 
-  def computer_place_ships
+  def computer_place_cruiser
     shuffled = @computer_board.cells.keys.shuffle[0..2]
     if @computer_board.valid_placement?(@computer_ships["Cruiser"], shuffled)
       @computer_board.place(@computer_ships["Cruiser"], shuffled)
-    elsif @computer_board.valid_placement?(@computer_ships["Submarine"], shuffled[0..1])
-      @computer_board.place(@computer_ships["Submarine"], shuffled[0..1])
     else
-      computer_place_ships
+      computer_place_cruiser
     end
-  end 
+  end
+
+  def computer_place_submarine
+    shuffled = @computer_board.cells.keys.shuffle[0..1]
+    if @computer_board.valid_placement?(@computer_ships["Submarine"], shuffled)
+      @computer_board.place(@computer_ships["Submarine"], shuffled)
+    else
+      computer_place_submarine
+    end
+  end
+
+  def computer_place_ships
+    computer_place_cruiser
+    computer_place_submarine
+  end
 
 end
 
