@@ -56,11 +56,44 @@ attr_reader :player_board,
     end
   end
 
-  def computer_place_ships
-    computer_place_cruiser
-    computer_place_submarine
+  def player_place_ships
+    puts "I have laid out my ships on the grid."
+    puts "You now need to lay out your two ships."
+    puts "The Cruiser is three units long and the Submarine is two units long."
+    puts @player_board.render(true)
+    player_place_cruiser
   end
 
-end
+  def print_player_board
+    puts @player_board.render(true)
+  end
 
-require "pry"; binding.pry
+  def player_place_cruiser
+    puts "Enter the squares for the Cruiser (3 spaces):"
+    puts ">"
+    player_response = gets.chomp.upcase.split(" ")
+
+    if @player_board.valid_placement?(@player_ships["Cruiser"], player_response)
+      @player_board.place(@player_ships["Cruiser"], player_response)
+      print_player_board
+    else
+      puts "Those are not valid squares."
+      player_place_cruiser
+    end
+  end
+
+  def player_place_submarine
+    puts "Enter the squares for the Submarine (2 spaces):"
+    puts ">"
+    player_response = gets.chomp.upcase.split(",")
+
+    if @player_board.valid_placement?(@player_ships["Submarine"], player_response)
+      @player_board.place(@player_ships["Submarine"], player_response)
+    else
+
+
+# game = Game.new
+#
+# game.player_place_ships
+
+# require "pry"; binding.pry
