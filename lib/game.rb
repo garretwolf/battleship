@@ -77,23 +77,29 @@ attr_reader :player_board,
       @player_board.place(@player_ships["Cruiser"], player_response)
       print_player_board
     else
-      puts "Those are not valid squares."
+      puts "Those are invalid coordinates. Please try again:"
+      puts ">"
       player_place_cruiser
     end
+    player_place_submarine
   end
 
   def player_place_submarine
     puts "Enter the squares for the Submarine (2 spaces):"
     puts ">"
-    player_response = gets.chomp.upcase.split(",")
+    player_response = gets.chomp.upcase.split(" ")
 
     if @player_board.valid_placement?(@player_ships["Submarine"], player_response)
       @player_board.place(@player_ships["Submarine"], player_response)
+      print_player_board
     else
+      puts "Those are invalid coordinates. Please try again:"
+      puts ">"
+      player_place_submarine
+    end
+  end
+end
 
+game = Game.new
 
-# game = Game.new
-#
-# game.player_place_ships
-
-# require "pry"; binding.pry
+game.player_place_ships
