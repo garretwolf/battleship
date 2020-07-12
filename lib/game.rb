@@ -24,11 +24,10 @@ attr_reader :player_board,
   def start
     p "Welcome to BATTLESHIP"
     p "Enter p to play. Enter q to quit"
-
     user_response = gets.chomp.downcase
-
     if user_response == "p"
-      # direct to method to begin setup of game
+      computer_place_ships
+      player_place_ships
     elsif user_response == "q"
       p "You have quit the game."
       exit
@@ -56,6 +55,11 @@ attr_reader :player_board,
     end
   end
 
+  def computer_place_ships
+    computer_place_cruiser
+    computer_place_submarine
+  end
+
   def player_place_ships
     puts "I have laid out my ships on the grid."
     puts "You now need to lay out your two ships."
@@ -70,7 +74,7 @@ attr_reader :player_board,
 
   def player_place_cruiser
     puts "Enter the squares for the Cruiser (3 spaces):"
-    puts ">"
+    print ">"
     player_response = gets.chomp.upcase.split(" ")
 
     if @player_board.valid_placement?(@player_ships["Cruiser"], player_response)
@@ -78,7 +82,7 @@ attr_reader :player_board,
       print_player_board
     else
       puts "Those are invalid coordinates. Please try again:"
-      puts ">"
+      print ">"
       player_place_cruiser
     end
     player_place_submarine
@@ -86,20 +90,15 @@ attr_reader :player_board,
 
   def player_place_submarine
     puts "Enter the squares for the Submarine (2 spaces):"
-    puts ">"
+    print ">"
     player_response = gets.chomp.upcase.split(" ")
-
     if @player_board.valid_placement?(@player_ships["Submarine"], player_response)
       @player_board.place(@player_ships["Submarine"], player_response)
       print_player_board
     else
       puts "Those are invalid coordinates. Please try again:"
-      puts ">"
+      print ">"
       player_place_submarine
     end
   end
 end
-
-game = Game.new
-
-game.player_place_ships
