@@ -101,4 +101,14 @@ attr_reader :player_board,
       player_place_submarine
     end
   end
+
+  def display_boards
+    puts "=============COMPUTER BOARD============="
+    puts @computer_board.render
+    puts "==============PLAYER BOARD=============="
+    puts @player_board.render(true)
+  end
 end
+
+game = Game.new
+game.display_boards
