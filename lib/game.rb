@@ -95,6 +95,7 @@ attr_reader :player_board,
     if @player_board.valid_placement?(@player_ships["Submarine"], player_response)
       @player_board.place(@player_ships["Submarine"], player_response)
       print_player_board
+      turn
     else
       puts "Those are invalid coordinates. Please try again:"
       print ">"
@@ -102,13 +103,60 @@ attr_reader :player_board,
     end
   end
 
+  def turn
+    display_boards
+  end
+
   def display_boards
     puts "=============COMPUTER BOARD============="
     puts @computer_board.render
     puts "==============PLAYER BOARD=============="
     puts @player_board.render(true)
+    player_shot
   end
+
+  # def player_shot_coordinate_response
+  #   @player_shot_coordinate = gets.chomp.upcase.to_s
+  # end
+
+  def player_shot
+    puts "Enter the coordinate for your shot:"
+    print ">"
+    player_shot_coordinate = gets.chomp.upcase.to_s
+
+    if @computer_board.valid_coordinate?(player_shot_coordinate) == false
+      puts "Please enter a valid coordinate:"
+      print ">"
+      player_shot_coordinate_response
+    elsif @computer_board.cells[player_shot_coordinate].fired_upon? == true
+      puts "You have already fired on that coordinate. Try again:"
+      print ">"
+      player_shot_coordinate_response
+    else
+      @computer_board.cells[player_shot_coordinate].fire_upon
+      if @computer_board.cells[player_shot_coordinate].render == "M"
+        puts "The shot was a miss."
+      elsif @computer_board.cells[player_shot_coordinate].render == "H"
+        puts "The shot was a hit!"
+      elsif @computer_board.cells[player_shot_coordinate].render == "X"
+        puts "You sunk the computer's ship."
+      end
+    end
+
+    # def results
+    #   if @computer_board.cells[@player_shot_coordinate].render == "M"
+    #     puts "The shot was a miss."
+    #   elsif @computer_board.cells[@player_shot_coordinate].render == "H"
+    #     puts "The shot was a hit!"
+    #   elsif @computer_board.cells[@player_shot_coordinate].render == "X"
+    #     puts "You sunk the computer's ship."
+    #   end
+    # end
+  end
+
+  # def computer_shot
+  # end
 end
 
 game = Game.new
-game.display_boards
+game.start
