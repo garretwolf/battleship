@@ -1,7 +1,3 @@
-require './lib/ship'
-require './lib/cell'
-require './lib/board'
-
 class Game
 
 attr_reader :player_board,
@@ -28,6 +24,7 @@ attr_reader :player_board,
     if user_response == "p"
       computer_place_ships
       player_place_ships
+      turn
     elsif user_response == "q"
       p "You have quit the game."
       exit
@@ -76,7 +73,6 @@ attr_reader :player_board,
     puts "Enter the squares for the Cruiser (3 spaces):"
     print ">"
     player_response = gets.chomp.upcase.split(" ")
-
     if @player_board.valid_placement?(@player_ships["Cruiser"], player_response)
       @player_board.place(@player_ships["Cruiser"], player_response)
       print_player_board
@@ -95,7 +91,6 @@ attr_reader :player_board,
     if @player_board.valid_placement?(@player_ships["Submarine"], player_response)
       @player_board.place(@player_ships["Submarine"], player_response)
       print_player_board
-      turn
     else
       puts "Those are invalid coordinates. Please try again:"
       print ">"
@@ -105,6 +100,17 @@ attr_reader :player_board,
 
   def turn
     display_boards
+    player_shot
+      if @computer_ships["Cruiser"].sunk? && @computer_ships["Submarine"].sunk?
+        puts "You won!"
+        exit
+      end
+    computer_shot
+      if @player_ships["Cruiser"].sunk? && @player_ships["Submarine"].sunk?
+        puts "I won!"
+        exit
+      end
+    turn
   end
 
   def display_boards
@@ -112,51 +118,45 @@ attr_reader :player_board,
     puts @computer_board.render
     puts "==============PLAYER BOARD=============="
     puts @player_board.render(true)
-    player_shot
   end
-
-  # def player_shot_coordinate_response
-  #   @player_shot_coordinate = gets.chomp.upcase.to_s
-  # end
 
   def player_shot
     puts "Enter the coordinate for your shot:"
     print ">"
     player_shot_coordinate = gets.chomp.upcase.to_s
-
     if @computer_board.valid_coordinate?(player_shot_coordinate) == false
       puts "Please enter a valid coordinate:"
       print ">"
-      player_shot_coordinate_response
-    elsif @computer_board.cells[player_shot_coordinate].fired_upon? == true
-      puts "You have already fired on that coordinate. Try again:"
+      player_shot
+    elsif @computer_board.cells[player_shot_coordinate].fired_upon?
+      puts "You have already fired upon this coordinate. Please enter a valid coordinate:"
       print ">"
-      player_shot_coordinate_response
+      player_shot
     else
       @computer_board.cells[player_shot_coordinate].fire_upon
       if @computer_board.cells[player_shot_coordinate].render == "M"
-        puts "The shot was a miss."
+        puts "Your shot on #{player_shot_coordinate} was a miss."
       elsif @computer_board.cells[player_shot_coordinate].render == "H"
-        puts "The shot was a hit!"
+        puts "Your shot on #{player_shot_coordinate} was a direct hit!"
       elsif @computer_board.cells[player_shot_coordinate].render == "X"
-        puts "You sunk the computer's ship."
+        puts "Your shot on #{player_shot_coordinate} sunk my ship!"
       end
     end
-
-    # def results
-    #   if @computer_board.cells[@player_shot_coordinate].render == "M"
-    #     puts "The shot was a miss."
-    #   elsif @computer_board.cells[@player_shot_coordinate].render == "H"
-    #     puts "The shot was a hit!"
-    #   elsif @computer_board.cells[@player_shot_coordinate].render == "X"
-    #     puts "You sunk the computer's ship."
-    #   end
-    # end
   end
 
-  # def computer_shot
-  # end
-end
-
-game = Game.new
-game.start
+  def computer_shot
+    computer_shot_coordinate = @player_board.cells.keys.sample
+    if @player_board.cells[computer_shot_coordinate].fired_upon?
+      computer_shot
+    else
+      @player_board.cells[computer_shot_coordinate].fire_upon
+        if @player_board.cells[computer_shot_coordinate].render == "M"
+          puts "My shot on #{computer_shot_coordinate} was a miss."
+        elsif @player_board.cells[computer_shot_coordinate].render == "H"
+          puts "My shot on #{computer_shot_coordinate} was a direct hit!"
+        elsif @player_board.cells[computer_shot_coordinate].render == "X"
+          puts "My shot on #{computer_shot_coordinate} sunk your ship!"
+        end
+      end
+    end
+  end
