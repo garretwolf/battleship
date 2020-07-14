@@ -18,18 +18,18 @@ attr_reader :player_board,
   end
 
   def start
-    p "Welcome to BATTLESHIP"
-    p "Enter p to play. Enter q to quit"
+    puts "Welcome to BATTLESHIP"
+    puts "Enter p to play. Enter q to quit"
     user_response = gets.chomp.downcase
     if user_response == "p"
       computer_place_ships
       player_place_ships
       turn
     elsif user_response == "q"
-      p "You have quit the game."
+      puts "You have quit the game."
       exit
     else
-      p "That is not a valid response. Please try again."
+      puts "That is not a valid response. Please try again."
       start
     end
   end
@@ -63,6 +63,7 @@ attr_reader :player_board,
     puts "The Cruiser is three units long and the Submarine is two units long."
     puts @player_board.render(true)
     player_place_cruiser
+    player_place_submarine
   end
 
   def print_player_board
@@ -81,7 +82,6 @@ attr_reader :player_board,
       print ">"
       player_place_cruiser
     end
-    player_place_submarine
   end
 
   def player_place_submarine
@@ -103,12 +103,14 @@ attr_reader :player_board,
     player_shot
       if @computer_ships["Cruiser"].sunk? && @computer_ships["Submarine"].sunk?
         puts "You won!"
-        exit
+        initialize
+        start
       end
     computer_shot
       if @player_ships["Cruiser"].sunk? && @player_ships["Submarine"].sunk?
         puts "I won!"
-        exit
+        initialize
+        start
       end
     turn
   end
