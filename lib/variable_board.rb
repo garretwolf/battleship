@@ -49,10 +49,18 @@ class VariableBoard
    end
  end
 
+ def board_rows
+   coordinates = []
+   @columns.count.times do |num|
+    coordinates << @cells[@cells.keys[num]].render
+   end
+   coordinates.join(' ')
+ end
+
  def render
    puts "  #{@columns[0..@columns.last - 1].join(' ')}"
    @columns.count.times do |num|
-     puts "#{@cells.keys[num][0]} #{@cells[@cells.keys[num]].render}"
+     puts "#{@cells.keys[num][0]} #{board_rows}"
    end
 
 
