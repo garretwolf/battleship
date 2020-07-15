@@ -51,6 +51,7 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
+    coordinates.all? {|cell| @cells[cell] != nil} &&
     coordinates.all? {|cell| @cells[cell].empty?} &&
     coordinates.all? {|coordinate| valid_coordinate?(coordinate)} &&
     ship.length == coordinates.count &&
