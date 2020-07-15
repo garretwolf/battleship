@@ -173,7 +173,6 @@ attr_reader :player_board,
     end
   end
 
-
   def computer_fire_upon(coordinate)
     @player_board.cells[coordinate].fire_upon
     if @player_board.cells[coordinate].render == "M"
@@ -186,11 +185,52 @@ attr_reader :player_board,
   end
 
   def computer_shot
+    if player_board_has_hits?
+      hit_coordinate = @player_board.cells.values.find {|cell| cell.render(true) == "H"}.coordinate
+      computer_smart_shot(hit_coordinate)
+    else
+      computer_random_shot
+    end
+  end
+
+  def computer_smart_shot(coordinate)
+    right = (coordinate[0]) + (coordinate[1].to_i + 1).to_s
+    left = (coordinate[0]) + (coordinate[1].to_i - 1).to_s
+    below = (coordinate[0].ord + 1).chr + (coordinate[1])
+    above = (coordinate[0].ord - 1).chr + (coordinate[1])
+    if    @player_board.valid_coordinate?(right) &&
+          @player_board.cells[right].fired_upon? == false
+          computer_fire_upon(right)
+    elsif @player_board.valid_coordinate?(left) &&
+          @player_board.cells[left].fired_upon? == false
+          computer_fire_upon(left)
+    elsif @player_board.valid_coordinate?(below) &&
+          @player_board.cells[below].fired_upon? == false
+          computer_fire_upon(below)
+    elsif @player_board.valid_coordinate?(above) &&
+          @player_board.cells[above].fired_upon? == false
+          computer_fire_upon(above)
+    elsif @player_board.valid_coordinate?(right)
+          computer_smart_shot(right)
+    elsif @player_board.valid_coordinate?(left)
+          computer_smart_shot(left)
+    else
+          computer_random_shot
+    end
+  end
+
+  def computer_random_shot
     computer_shot_coordinate = @player_board.cells.keys.sample
     if @player_board.cells[computer_shot_coordinate].fired_upon?
-      computer_shot
+      computer_random_shot
     else
       computer_fire_upon(computer_shot_coordinate)
+    end
+  end
+
+  def player_board_has_hits?
+    @player_board.cells.values.any? do |cell|
+      cell.render(true) == "H"
     end
   end
 end
