@@ -1,9 +1,9 @@
 class Game
-
-attr_reader :player_board,
+  attr_reader :player_board,
             :computer_board,
             :player_ships,
             :computer_ships
+            
   def initialize
     @player_board = Board.new
     @computer_board = Board.new
