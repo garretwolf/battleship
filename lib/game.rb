@@ -61,7 +61,7 @@ attr_reader :player_board,
     puts "I have laid out my ships on the grid."
     puts "You now need to lay out your two ships."
     puts "The Cruiser is three units long and the Submarine is two units long."
-    puts @player_board.render(true)
+    print_player_board
     player_place_cruiser
     player_place_submarine
   end
@@ -122,43 +122,51 @@ attr_reader :player_board,
     puts @player_board.render(true)
   end
 
-  def player_shot
-    puts "Enter the coordinate for your shot:"
-    print ">"
-    player_shot_coordinate = gets.chomp.upcase.to_s
-    if @computer_board.valid_coordinate?(player_shot_coordinate) == false
-      puts "Please enter a valid coordinate:"
-      print ">"
-      player_shot
-    elsif @computer_board.cells[player_shot_coordinate].fired_upon?
-      puts "You have already fired upon this coordinate. Please enter a valid coordinate:"
-      print ">"
-      player_shot
-    else
-      @computer_board.cells[player_shot_coordinate].fire_upon
-      if @computer_board.cells[player_shot_coordinate].render == "M"
-        puts "Your shot on #{player_shot_coordinate} was a miss."
-      elsif @computer_board.cells[player_shot_coordinate].render == "H"
-        puts "Your shot on #{player_shot_coordinate} was a direct hit!"
-      elsif @computer_board.cells[player_shot_coordinate].render == "X"
-        puts "Your shot on #{player_shot_coordinate} sunk my ship!"
+  def player_fire_upon(coordinate)
+      @computer_board.cells[coordinate].fire_upon
+      if @computer_board.cells[coordinate].render == "M"
+        puts "Your shot on #{coordinate} was a miss."
+      elsif @computer_board.cells[coordinate].render == "H"
+        puts "Your shot on #{coordinate} was a direct hit!"
+      elsif @computer_board.cells[coordinate].render == "X"
+        puts "Your shot on #{coordinate} sunk my ship!"
       end
     end
-  end
 
-  def computer_shot
-    computer_shot_coordinate = @player_board.cells.keys.sample
-    if @player_board.cells[computer_shot_coordinate].fired_upon?
-      computer_shot
-    else
-      @player_board.cells[computer_shot_coordinate].fire_upon
-        if @player_board.cells[computer_shot_coordinate].render == "M"
-          puts "My shot on #{computer_shot_coordinate} was a miss."
-        elsif @player_board.cells[computer_shot_coordinate].render == "H"
-          puts "My shot on #{computer_shot_coordinate} was a direct hit!"
-        elsif @player_board.cells[computer_shot_coordinate].render == "X"
-          puts "My shot on #{computer_shot_coordinate} sunk your ship!"
+    def player_shot
+      puts "Enter the coordinate for your shot:"
+      print ">"
+      player_shot_coordinate = gets.chomp.upcase.to_s
+      if @computer_board.valid_coordinate?(player_shot_coordinate) == false
+        puts "Please enter a valid coordinate:"
+        print ">"
+        player_shot
+      elsif @computer_board.cells[player_shot_coordinate].fired_upon?
+        puts "You have already fired upon this coordinate. Please enter a valid coordinate:"
+        print ">"
+        player_shot
+      else
+        player_fire_upon(player_shot_coordinate)
+      end
+    end
+
+    def computer_fire_upon(coordinate)
+      @player_board.cells[coordinate].fire_upon
+        if @player_board.cells[coordinate].render == "M"
+          puts "My shot on #{coordinate} was a miss."
+        elsif @player_board.cells[coordinate].render == "H"
+          puts "My shot on #{coordinate} was a direct hit!"
+        elsif @player_board.cells[coordinate].render == "X"
+          puts "My shot on #{coordinate} sunk your ship!"
         end
+      end
+
+    def computer_shot
+      computer_shot_coordinate = @player_board.cells.keys.sample
+      if @player_board.cells[computer_shot_coordinate].fired_upon?
+        computer_shot
+      else
+        computer_fire_upon(computer_shot_coordinate)
       end
     end
   end
