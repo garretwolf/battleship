@@ -24,10 +24,10 @@ class BoardTest < Minitest::Test
     board.cells
 
     assert_equal true, board.valid_coordinate?("A1")
-    assert_equal true, board.valid_coordinate?("B2")
-    assert_equal true, board.valid_coordinate?("C3")
     assert_equal true, board.valid_coordinate?("D4")
-    assert_equal false, board.valid_coordinate?("Z8")
+    assert_equal false, board.valid_coordinate?("A5")
+    assert_equal false, board.valid_coordinate?("E1")
+    assert_equal false, board.valid_coordinate?("A22")
   end
 
   def test_if_placement_is_valid_based_on_ship_length_and_number_of_coordinates
@@ -39,6 +39,20 @@ class BoardTest < Minitest::Test
     assert_equal false, board.valid_placement?(submarine, ["A2", "A3", "A4"])
     assert_equal true, board.valid_placement?(cruiser, ["A1", "A2", "A3"])
     assert_equal true, board.valid_placement?(submarine, ["A2", "A3"])
+  end
+
+  def test_if_coordinates_are_consecutive
+      board = Board.new
+
+      assert_equal true, board.consecutive_coordinates?(["A1", "A2", "A3"])
+      assert_equal true, board.consecutive_coordinates?(["C2", "C3", "C4"])
+      assert_equal true, board.consecutive_coordinates?(["A1", "A2"])
+      assert_equal true, board.consecutive_coordinates?(["A1", "B1"])
+      assert_equal true, board.consecutive_coordinates?(["B3", "C3", "D3"])
+      assert_equal false, board.consecutive_coordinates?(["A1", "A2", "A4"])
+      assert_equal false, board.consecutive_coordinates?(["A1", "C1"])
+      assert_equal false, board.consecutive_coordinates?(["A3", "A2", "A1"])
+      assert_equal false, board.consecutive_coordinates?(["C1", "B1"])
   end
 
   def test_if_placement_is_horizontal
@@ -57,20 +71,6 @@ class BoardTest < Minitest::Test
 
     assert_equal false, board.vertical_placement?(["A1", "A2", "A3"])
     assert_equal true, board.vertical_placement?(["A1", "B1"])
-  end
-
-  def test_if_coordinates_are_consecutive
-    board = Board.new
-
-    assert_equal true, board.consecutive_coordinates?(["A1", "A2", "A3"])
-    assert_equal true, board.consecutive_coordinates?(["C2", "C3", "C4"])
-    assert_equal true, board.consecutive_coordinates?(["A1", "A2"])
-    assert_equal true, board.consecutive_coordinates?(["A1", "B1"])
-    assert_equal true, board.consecutive_coordinates?(["B3", "C3", "D3"])
-    assert_equal false, board.consecutive_coordinates?(["A1", "A2", "A4"])
-    assert_equal false, board.consecutive_coordinates?(["A2", "A1"])
-    assert_equal false, board.consecutive_coordinates?(["B1", "C1", "D2"])
-    assert_equal false, board.consecutive_coordinates?(["D3", "D1", "D2"])
   end
 
   def test_if_placement_is_valid
