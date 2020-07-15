@@ -1,6 +1,5 @@
-require './lib/ship'
 class Cell
-attr_reader :coordinate, :ship, :fired_upon
+  attr_reader :coordinate, :ship, :fired_upon
 
   def initialize(coordinate)
     @coordinate = coordinate
@@ -37,7 +36,7 @@ attr_reader :coordinate, :ship, :fired_upon
     elsif fired_upon? && !empty?
       "H"
     elsif !fired_upon?
-        "."
+      "."
     end
   end
 end

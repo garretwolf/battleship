@@ -1,6 +1,6 @@
 class Ship
-
-attr_reader :name, :length, :health
+  attr_reader :name, :length, :health
+  
   def initialize(name, length)
     @name = name
     @length = length
@@ -15,5 +15,3 @@ attr_reader :name, :length, :health
     @health -= 1
   end
 end
-
-# require "pry"; binding.pry 

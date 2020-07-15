@@ -88,6 +88,17 @@ def test_it_can_render_optional_argument
   assert_equal "S", cell_2.render(true)
 end
 
+def test_it_can_render_if_fire_upon_and_not_sunk
+  cell_1 = Cell.new("B4")
+  cell_2 = Cell.new("C3")
+  cruiser = Ship.new("Cruiser", 3)
+  cell_2.place_ship(cruiser)
+  cell_2.fire_upon
+
+  assert_equal "H", cell_2.render
+  assert_equal false, cruiser.sunk?
+end
+
 def test_it_can_render_if_fire_upon_and_sunk
   cell_1 = Cell.new("B4")
   cell_2 = Cell.new("C3")
@@ -97,16 +108,7 @@ def test_it_can_render_if_fire_upon_and_sunk
   cruiser.hit
   cruiser.hit
 
+  assert_equal true, cruiser.sunk?
   assert_equal "X", cell_2.render
 end
-
-def test_it_can_render_if_fire_upon
-  cell_1 = Cell.new("B4")
-  cell_2 = Cell.new("C3")
-  cruiser = Ship.new("Cruiser", 3)
-  cell_2.place_ship(cruiser)
-  cell_2.fire_upon
-
-  assert_equal "H", cell_2.render
 end
-end 
