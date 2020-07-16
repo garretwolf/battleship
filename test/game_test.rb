@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'mocha/minitest'
 require './lib/ship'
 require './lib/cell'
 require './lib/board'
@@ -157,4 +158,38 @@ class GameTest < Minitest::Test
    end
    assert_equal true, shot
  end
+
+ def test_if_computer_can_shoot_smart_shots
+   game = Game.new
+   game.player_board.place(game.player_ships["Cruiser"], ["A1", "A2", "A3"])
+   game.computer_fire_upon("A1")
+   game.computer_smart_shot("A1")
+
+   assert_equal game.player_board.cells["A2"].render(true), "H"
+ end
+
+ def test_game_can_start
+   game = Game.new
+   game.stubs(:gets).returns("p")
+   game.stubs(:computer_place_ships).returns("Hello")
+   game.stubs(:player_place_ships).returns("Bye")
+   game.stubs(:turn).returns("Hi")
+   assert_equal "Hi", game.start
+ end
+
+ def test_player_board_has_hits?
+   game = Game.new
+   game.player_board.place(game.player_ships["Cruiser"], ["A1", "A2", "A3"])
+   game.computer_fire_upon("A1")
+
+   assert_equal true, game.player_board_has_hits?
+ end
+
+ def test_computer_can_shoot_randomly
+   game = Game.new
+   game.computer_random_shot
+
+   assert_equal true, game.player_board.cells.values.any? {|cell| cell.render(true) == "M"}
+ end
+
 end
